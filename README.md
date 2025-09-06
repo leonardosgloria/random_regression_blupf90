@@ -29,8 +29,9 @@ git clone https://github.com/leonardosgloria/random_regression_blupf90.git
 │   └── genotype_BLUPF90.txt
 ├── output/                 # model outputs (h2.txt, VC_Time_var.txt, solutions, logs)
 └── scripts/
-    └── single_rrm.R    # tutorial script
-    └── multi_rrm.R    # tutorial script
+    └── single_trait.R    # tutorial script for longitudinal single trait model
+    └── multi_trait.R    # tutorial script for a multi-trait model with a longitudinal random regression model and a single time point trait
+
 ```
 
 ---
@@ -39,7 +40,7 @@ git clone https://github.com/leonardosgloria/random_regression_blupf90.git
 
 * **R ≥ 4.1**
   R packages: `pacman`, `orthopolynom`, `splines`, `dplyr`, `tidyr`, `stringr`, `data.table`, `readr`, `purrr`, `gtools`, **`NAM`**
-* **BLUPF90** binaries (downloaded automatically by the script)
+* **BLUPF90** binaries (you can use the function **download_BLUPF90(update = TRUE)** to download the binaries)
 * A CPU with multiple threads (optional but recommended)
 
 Install R deps (first run will auto-install via `pacman`):
