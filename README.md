@@ -13,13 +13,13 @@ The tutorial script:
 
 ---
 
-## 1) Quick start
+## Quick start
 Download the repository
 ```bash
 git clone https://github.com/leonardosgloria/random_regression_blupf90.git
 ```
 
-## 2) Repository layout
+## Repository layout
 
 ```
 .
@@ -34,7 +34,7 @@ git clone https://github.com/leonardosgloria/random_regression_blupf90.git
 
 ---
 
-## 3) Requirements
+## Requirements
 
 * **R ≥ 4.1**
   R packages: `pacman`, `orthopolynom`, `splines`, `dplyr`, `tidyr`, `stringr`, `data.table`, `readr`, `purrr`, `gtools`, **`NAM`**
@@ -51,7 +51,7 @@ pacman::p_load(orthopolynom, splines, dplyr, tidyr, stringr,
 
 ---
 
-## 4) Input data expected
+## Input data expected
 
 * **Phenotypes** (`data/pheno_RRM.txt`): a long table with at least
 
@@ -66,7 +66,7 @@ pacman::p_load(orthopolynom, splines, dplyr, tidyr, stringr,
 
 ---
 
-## 5) What the model fits
+## What the model fits
 
 ### Model formula (R wrapper)
 
@@ -93,7 +93,7 @@ RRM_option1 <- list(
 
 ---
 
-## 6) Preparing the data (`datarenum1`) — **includes your missing block**
+## Preparing the data (`datarenum1`) — **includes your missing block**
 
 Add this block near the top of your script (before model fitting):
 
@@ -113,7 +113,7 @@ datarenum1$int   <- factor(datarenum1$int)
 
 ---
 
-## 7) Running the script (core lines)
+## Running the script (core lines)
 
 ```r
 # Get BLUPF90 locally
