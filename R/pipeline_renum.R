@@ -369,8 +369,8 @@ summary_blup$polynomial <- data.table::fread("fi.txt")
       x[!(vapply(x, function(y) is.list(y) && length(y) == 0L, logical(1L)))]
     }
 
-    result_clean <- drop_nulls(output_multi)
-    return(result_clean)
+ #   result_clean <- drop_nulls(output_multi)
+    return(output_multi)
   }
 }
 
