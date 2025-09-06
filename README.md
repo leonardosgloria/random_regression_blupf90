@@ -1,6 +1,6 @@
 # Single-Trait Random Regression (RRM) with BLUPF90
 
-This repository shows how to fit a **single-trait Random Regression Model (RRM)** for a longitudinal secondary trait (e.g., canopy coverage across days) using **BLUPF90** from R.
+This repository shows how to fit a **single-trait Random Regression Model (RRM)** for a longitudinal trait (e.g., canopy coverage across days) using **BLUPF90** from R.
 
 The tutorial script:
 
