@@ -34,7 +34,7 @@ datarenum1$covYLD <-
   NAM::NNcov(MAP,datarenum1$YLD)
 
 ########################################################
-model <- AdjCC ~ IntBlk + ped|RRM|Geno
+model <- AdjCC ~ IntBlk + covYLD + ped|RRM|Geno
 
 residual_start1 <-  matrix(c(0.047))
 
@@ -65,7 +65,7 @@ model_single <- blup(datarenum=datarenum1,formula = model,fields_output=fiels_ou
                fit_option=list(yams=T,solution_mean=T,
                                VCE=T,sol_se=T,Inbreeding=T,
                                alpha_size=30,
-                               EM_REML=1,
+                               EM_REML=1000,
                                maxrounds=3000,
                                alpha_beta=c(0.95,0.05),
                                tunedG=0,
