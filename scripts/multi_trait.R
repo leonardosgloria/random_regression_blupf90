@@ -81,9 +81,6 @@ model_multi <- blup(datarenum=datarenum1,formula = model,fields_output=fiels_out
 ##############
 # OUTPUT
 ##############            
-fread("h2.txt") %>% filter(Time_var>=RRM_option1$Pmin&Time_var<=RRM_option1$Pmax) # narrow-sense Heritability
-fread("VC_Time_var.txt") %>% filter(Time_var>=RRM_option1$Pmin&Time_var<=RRM_option1$Pmax) %>%
-  select(Time_var,Additive_variance=Geno)# Additive Genetic variance
 
 
 
