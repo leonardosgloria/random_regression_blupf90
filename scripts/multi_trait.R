@@ -81,7 +81,9 @@ model_multi <- blup(datarenum=datarenum1,formula = model,fields_output=fiels_out
 ##############
 # OUTPUT
 ##############            
-
+model_multi$h2_multi$AdjCC # Variance components for Adjusted canopy coverage
+model_multi$h2_multi$YLD %>% distinct(RESIDUAL,.keep_all = T) # Variance components for yield
+model_multi$gen_cor # Genetic correlation between the traits
 
 
 
