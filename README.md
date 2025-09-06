@@ -188,7 +188,7 @@ This section shows how to fit a **multi-trait random regression model** where:
 * **AdjCC** is modeled with **random regression** (Legendre polynomials) across `Day`;
 * **YLD** is modeled as a **single-time** additive effect (no random regression).
 
-> ⚠️ **Important:** Do **not** duplicate YLD across days. Keep **one YLD per Genotype **.
+> ⚠️ **Important:** Do **not** duplicate YLD across days. Keep **one YLD per Genotype with the corresponding Day **.
 
 ### Data prep (nearest-neighbor covariate + factor setup)
 
@@ -282,15 +282,12 @@ model_bi <- blup(datarenum=datarenum1,formula = model,fields_output=fiels_output
 
 
 ```r
-# Heritability over time for SLT (AdjCC)
-h2_slt <- data.table::fread("output/h2.txt") |>
-  dplyr::filter(Time_var >= RRM_option1$Pmin & Time_var <= RRM_option1$Pmax)
-
-# Additive genetic variance over time for SLT
-vg_slt <- data.table::fread("output/VC_Time_var.txt") |>
-  dplyr::filter(Time_var >= RRM_option1$Pmin & Time_var <= RRM_option1$Pmax) |>
-  dplyr::select(Time_var, Additive_variance = Geno)
-# Correlation
+##############
+# OUTPUT
+##############            
+model_multi$h2_multi$AdjCC # Variance components for Adjusted canopy coverage
+model_multi$h2_multi$YLD %>% distinct(RESIDUAL,.keep_all = T) # Variance components for yield
+model_multi$gen_cor # Genetic correlation between the traits
 
 ```
 
