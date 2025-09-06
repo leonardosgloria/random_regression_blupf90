@@ -29,7 +29,8 @@ git clone https://github.com/leonardosgloria/random_regression_blupf90.git
 │   └── genotype_BLUPF90.txt
 ├── output/                 # model outputs (h2.txt, VC_Time_var.txt, solutions, logs)
 └── scripts/
-    └── run_single_rrm.R    # tutorial script
+    └── single_rrm.R    # tutorial script
+    └── multi_rrm.R    # tutorial script
 ```
 
 ---
