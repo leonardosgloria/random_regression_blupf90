@@ -16,7 +16,7 @@ The tutorial script:
 ## 1) Quick start
 Download the repository
 ```bash
-git clone https://github.com/<you>/<repo>.git
+git clone https://github.com/leonardosgloria/random_regression_blupf90.git
 ```
 
 ## 2) Repository layout
