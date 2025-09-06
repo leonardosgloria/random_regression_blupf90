@@ -117,7 +117,7 @@ datarenum1$int   <- factor(datarenum1$int)
 
 ```r
 # Get BLUPF90 locally
-download_BLUPF90(update = TRUE) # download the binaries to the folder: paste0(.libPaths()[1], "blupf90"), you can use the binary in the repository, copy and paste to this folder
+download_BLUPF90(update = TRUE) # download the binaries to the folder: paste0(.libPaths()[1], "/blupf90"), you can use the binary in the repository, copy and paste to this folder
 
 # Source helpers
 R_script_folder <- "R"
@@ -184,4 +184,116 @@ vg <- fread("output/VC_Time_var.txt") %>%
 ```
 
 ---
+## Bi-trait model — MT-RRM: longitudinal **AdjCC** + single-time **YLD**
+
+This section shows how to fit a **multi-trait random regression model** where:
+
+* **AdjCC** is modeled with **random regression** (Legendre polynomials) across `Day`;
+* **YLD** is modeled as a **single-time** additive effect (no random regression).
+
+> ⚠️ **Important:** Do **not** duplicate YLD across days. Keep **one YLD per Genotype **.
+
+### Data prep (nearest-neighbor covariate + factor setup)
+
+```r
+# --- Load phenotypes ---
+pheno_RRM <- data.table::fread("data/pheno_RRM.txt", header = TRUE, data.table = FALSE)
+datarenum1 <- pheno_RRM
+
+# Factors expected by the model
+datarenum1$Geno   <- factor(datarenum1$Geno)
+datarenum1$IntBlk <- factor(datarenum1$IntBlk)
+datarenum1$Block  <- factor(datarenum1$Block)
+datarenum1$int    <- factor(datarenum1$int)
+
+# ---- Nearest-neighbor map (optional helper covariate; not used in the formulas below) ----
+SP  <- data.frame(Block = datarenum1$Block, Row = datarenum1$Row, Col = datarenum1$Col)
+MAP <- NAM::NNsrc(SP, 2.2, 1)      # tune radii as needed
+
+# Clean YLD, compute smoothed covariate if you want to use it elsewhere
+datarenum1$YLD <- replace(datarenum1$YLD, which(datarenum1$YLD < 0), NA)
+datarenum1$covYLD <- NAM::NNcov(MAP, datarenum1$YLD)
+
+# ---- Sanity check: YLD should not be replicated across days ----
+chk <- dplyr::count(datarenum1, Geno, int, wt = !is.na(YLD), name = "nYLD_nonNA")
+stopifnot(all(chk$nYLD_nonNA <= 1))   # 1 per Geno×int (or 0 if missing), never >1
+```
+
+### Model formulas (as a list)
+
+* First formula = AdjCC with **RRM**;
+* Second formula = YLD as **single-time**.
+
+```r
+model <- list(AdjCC ~   int/RRM + IntBlk + ped|RRM|Geno,
+              YLD ~   IntBlk +covYLD+ ped|Geno
+              )
+
+)
+```
+
+### Residual and genetic start values
+
+These are **starting values** 
+
+```r
+# Residual start: diag for [AdjCC, YLD]
+residual_start1 <- matrix(c(0.0400, 0.0000,
+                            0.0000, 90.0000),
+                          nrow = 2, byrow = TRUE)
+
+# Genetic start matrix (example provided by you; keep order consistent with your wrapper)
+VC_start1 <- matrix(c(
+  0.2528,    4.0250,   0.004715, 0.0000,  -0.2369, 0.0000,
+  4.0250,   64.4200,   0.758600, 0.0000,  -3.7720, 0.0000,
+  0.004715,  0.758600, 0.001352, 0.0000,  -0.04739,0.0000,
+  0.0000,    0.0000,   0.0000,   0.0000,   0.0000, 0.0000,
+ -0.2369,   -3.7720,  -0.04739,  0.0000,   0.2246, 0.0000,
+  0.0000,    0.0000,   0.0000,   0.0000,   0.0000, 0.0000
+), nrow = 6, byrow = TRUE)
+
+genotype_file1 <- "genotype_BLUPF90.txt"
+ped_name1 <- NULL
+PED_DEPTH1 <- 3
+fiels_output_pos1 <- NULL
+weights_object1<- NULL
+```
+
+### Fit the bi-trait model
+
+```r
+RRM_option1 <- list(poly = 2, Timevar = "Day", Pmin = 17, Pmax = 73)
+
+model_bi <- blup(datarenum=datarenum1,formula = model,fields_output=fiels_output_pos1,weights_object=weights_object1,
+               residual_start=residual_start1,VCA_RRM=VC_start1,ped_name=ped_name1,
+               PED_DEPTH=PED_DEPTH1,genotype_file=genotype_file1,
+               missing_values=missing_values1,
+               RRM_option=RRM_option1,het_res_variance=NULL,
+               fit_option=list(yams=T,solution_mean=T,
+                               VCE=T,sol_se=T,Inbreeding=T,
+                               alpha_size=30,
+                               EM_REML=1000,
+                               maxrounds=3000,
+                               alpha_beta=c(0.95,0.05),
+                               tunedG=0,
+                               conv_crit=1e-10),
+              run_model=list(n_threads=20)
+              ,keep_files=T)
+```
+
+### Reading multi-trait outputs
+
+
+```r
+# Heritability over time for SLT (AdjCC)
+h2_slt <- data.table::fread("output/h2.txt") |>
+  dplyr::filter(Time_var >= RRM_option1$Pmin & Time_var <= RRM_option1$Pmax)
+
+# Additive genetic variance over time for SLT
+vg_slt <- data.table::fread("output/VC_Time_var.txt") |>
+  dplyr::filter(Time_var >= RRM_option1$Pmin & Time_var <= RRM_option1$Pmax) |>
+  dplyr::select(Time_var, Additive_variance = Geno)
+# Correlation
+
+```
 
