@@ -10,7 +10,7 @@ The tutorial script:
 * defines the RRM (Legendre basis),
 * runs the model,
 * reads heritability and additive variance profiles over time.
-⚠️ **Important: Due to the size of the genotype and the phenotype use a HPC with >50Gb of RAM and Linux** 
+* ⚠️ **Important: Due to the size of the genotype and the phenotype use a HPC with >50Gb of RAM and Linux** 
 ---
 
 ## Quick start
