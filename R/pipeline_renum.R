@@ -223,9 +223,9 @@ summary_blup$polynomial <- data.table::fread("fi.txt")
       x[!(vapply(x, function(y) is.list(y) && length(y) == 0L, logical(1L)))]
     }
 
-    result_clean <- drop_nulls(summary_blup)
+#    result_clean <- drop_nulls(summary_blup)
 
-    return(result_clean)
+     return(summary_blup)
 
   }else{
     ###################################
