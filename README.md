@@ -172,14 +172,11 @@ model_single <- blup(
   keep_files = TRUE
 )
 
-# Read key outputs
-library(data.table)
-h2 <- fread("output/h2.txt") %>%
-  dplyr::filter(Time_var >= RRM_option1$Pmin & Time_var <= RRM_option1$Pmax)
+# outputs
+model_single$Heritability%>% filter(Time_var>=RRM_option1$Pmin&Time_var<=RRM_option1$Pmax) %>% 
+  select(Time_var,Additive_variance=Geno,Heritability=h2) # narrow-sense Heritability and Additive Genetic variance
 
-vg <- fread("output/VC_Time_var.txt") %>%
-  dplyr::filter(Time_var >= RRM_option1$Pmin & Time_var <= RRM_option1$Pmax) %>%
-  dplyr::select(Time_var, Additive_variance = Geno)
+
 
 ```
 
