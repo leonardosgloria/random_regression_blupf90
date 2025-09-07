@@ -47,13 +47,23 @@ Install R deps (first run will auto-install via `pacman`):
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(orthopolynom, splines, dplyr, tidyr, stringr,
                data.table, readr, purrr, gtools, NAM)
+
+
+# Source helpers
+R_script_folder <- "R"
+files <- list.files(R_script_folder, pattern = "[.][Rr]$", full.names = TRUE, recursive = TRUE)
+invisible(lapply(files, function(f) try(source(f, chdir = TRUE), silent = TRUE)))
+
+# Get BLUPF90 
+download_BLUPF90(update = TRUE) # download the binaries to the folder: paste0(.libPaths()[1], "/blupf90"), you can use the binary in this repository, copy and paste to this folder
+
 ```
 
 ---
 * **AdjCC** is modeled with **random regression** (Legendre polynomials) across `Day`;
 * **YLD** is modeled as a **single-time** additive effect (no random regression).
 
-> ⚠️ **Important:** Do **not** duplicate YLD across days. Keep **one YLD per Genotype with the corresponding Day **.
+> ⚠️ **Important:** Do not duplicate YLD across days. Keep one YLD per Genotype with the corresponding Day.
 
 ### Data prep (nearest-neighbor covariate + factor setup)
 
