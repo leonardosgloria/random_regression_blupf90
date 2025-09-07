@@ -34,8 +34,8 @@ datarenum1$covYLD <-
   NAM::NNcov(MAP,datarenum1$YLD)
 
 ########################################################
-model <- list(AdjCC ~   int/RRM + IntBlk + ped|RRM|Geno,
-              YLD ~   IntBlk +covYLD+ ped|Geno
+model <- list(AdjCC ~   int/RRM + IntBlk + covYLD + ped|RRM|Geno,
+              YLD ~   IntBlk + covYLD + ped|Geno
               )
 
 residual_start1 <-matrix(c(0.0400,       0.0000
