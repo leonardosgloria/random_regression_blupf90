@@ -179,4 +179,4 @@ model_multi$h2_multi$YLD %>% distinct(RESIDUAL,.keep_all = T) # Variance compone
 model_multi$gen_cor # Genetic correlation between the traits
 
 ```
-
+The original custom R code in R/ and scripts/ is licensed under the MIT License. Third-party software, including BLUPF90 binaries, and research datasets retain their respective license terms.
